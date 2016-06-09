@@ -1,0 +1,27 @@
+[root]
+name = "dxsafe"
+version = "0.3.2"
+dependencies = [
+ "dxguid-sys 0.2.0 (git+https://github.com/red75prime/winapi-rs?branch=D2D1_IIDs)",
+ "libc 0.2.11 (registry+https://github.com/rust-lang/crates.io-index)",
+ "winapi 0.2.7 (git+https://github.com/red75prime/winapi-rs?branch=D2D1_IIDs)",
+]
+
+[[package]]
+name = "dxguid-sys"
+version = "0.2.0"
+source = "git+https://github.com/red75prime/winapi-rs?branch=D2D1_IIDs#9104b26079645d76d460a5d3aa783ce791b95b2c"
+dependencies = [
+ "winapi 0.2.7 (git+https://github.com/red75prime/winapi-rs?branch=D2D1_IIDs)",
+]
+
+[[package]]
+name = "libc"
+version = "0.2.11"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "winapi"
+version = "0.2.7"
+source = "git+https://github.com/red75prime/winapi-rs?branch=D2D1_IIDs#9104b26079645d76d460a5d3aa783ce791b95b2c"
+
