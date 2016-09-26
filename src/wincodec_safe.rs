@@ -141,8 +141,8 @@ pub trait TWICBitmapCodecInfo: TWICComponentInfo {
   //  Method MatchesMimeType
   
   #[allow(non_snake_case)]
-  fn matches_mime_type(&self, wzMimeType: Cow<str>, pfMatches: &mut BOOL) -> HResult<HRESULT> {
-    let lv1: Vec<u16> = str_to_vec_u16(wzMimeType);
+  fn matches_mime_type<T: AsRef<str>>(&self, wzMimeType: T, pfMatches: &mut BOOL) -> HResult<HRESULT> {
+    let lv1: Vec<u16> = str_to_vec_u16(wzMimeType.as_ref().into());
     let _hr=unsafe { (*(self.iptr() as *mut IWICBitmapCodecInfo)).MatchesMimeType(lv1.as_ptr() as LPCWSTR, pfMatches) };
     hr2ret(_hr,_hr)
   }
@@ -920,8 +920,8 @@ pub trait TWICColorContext: TUnknown {
   //  Method InitializeFromFilename
   
   #[allow(non_snake_case)]
-  fn initialize_from_filename(&self, wzFilename: Cow<str>) -> HResult<HRESULT> {
-    let lv1: Vec<u16> = str_to_vec_u16(wzFilename);
+  fn initialize_from_filename<T: AsRef<str>>(&self, wzFilename: T) -> HResult<HRESULT> {
+    let lv1: Vec<u16> = str_to_vec_u16(wzFilename.as_ref().into());
     let _hr=unsafe { (*(self.iptr() as *mut IWICColorContext)).InitializeFromFilename(lv1.as_ptr() as LPCWSTR) };
     hr2ret(_hr,_hr)
   }
@@ -2143,8 +2143,8 @@ pub trait TWICMetadataQueryReader: TUnknown {
   //  Method GetMetadataByName
   
   #[allow(non_snake_case)]
-  fn get_metadata_by_name(&self, wzName: Cow<str>, pvarValue: &mut PROPVARIANT) -> HResult<HRESULT> {
-    let lv1: Vec<u16> = str_to_vec_u16(wzName);
+  fn get_metadata_by_name<T: AsRef<str>>(&self, wzName: T, pvarValue: &mut PROPVARIANT) -> HResult<HRESULT> {
+    let lv1: Vec<u16> = str_to_vec_u16(wzName.as_ref().into());
     let _hr=unsafe { (*(self.iptr() as *mut IWICMetadataQueryReader)).GetMetadataByName(lv1.as_ptr() as LPCWSTR, pvarValue) };
     hr2ret(_hr,_hr)
   }
@@ -2180,8 +2180,8 @@ pub trait TWICMetadataQueryWriter: TWICMetadataQueryReader {
   //  Method SetMetadataByName
   
   #[allow(non_snake_case)]
-  fn set_metadata_by_name(&self, wzName: Cow<str>, pvarValue: &PROPVARIANT) -> HResult<HRESULT> {
-    let lv1: Vec<u16> = str_to_vec_u16(wzName);
+  fn set_metadata_by_name<T: AsRef<str>>(&self, wzName: T, pvarValue: &PROPVARIANT) -> HResult<HRESULT> {
+    let lv1: Vec<u16> = str_to_vec_u16(wzName.as_ref().into());
     let _hr=unsafe { (*(self.iptr() as *mut IWICMetadataQueryWriter)).SetMetadataByName(lv1.as_ptr() as LPCWSTR, pvarValue) };
     hr2ret(_hr,_hr)
   }
@@ -2189,8 +2189,8 @@ pub trait TWICMetadataQueryWriter: TWICMetadataQueryReader {
   //  Method RemoveMetadataByName
   
   #[allow(non_snake_case)]
-  fn remove_metadata_by_name(&self, wzName: Cow<str>) -> HResult<HRESULT> {
-    let lv1: Vec<u16> = str_to_vec_u16(wzName);
+  fn remove_metadata_by_name<T: AsRef<str>>(&self, wzName: T) -> HResult<HRESULT> {
+    let lv1: Vec<u16> = str_to_vec_u16(wzName.as_ref().into());
     let _hr=unsafe { (*(self.iptr() as *mut IWICMetadataQueryWriter)).RemoveMetadataByName(lv1.as_ptr() as LPCWSTR) };
     hr2ret(_hr,_hr)
   }

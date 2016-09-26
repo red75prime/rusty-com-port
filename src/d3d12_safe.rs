@@ -575,8 +575,8 @@ pub trait TD3D12Device: TD3D12Object {
   //  Method CreateSharedHandle
   
   #[allow(non_snake_case)]
-  fn create_shared_handle(&self, object: &mut ID3D12DeviceChild, attributes: Option<&SECURITY_ATTRIBUTES>, access: DWORD, name: Cow<str>) -> HResult<HANDLE> {
-    let lv1: Vec<u16> = str_to_vec_u16(name);
+  fn create_shared_handle<T: AsRef<str>>(&self, object: &mut ID3D12DeviceChild, attributes: Option<&SECURITY_ATTRIBUTES>, access: DWORD, name: T) -> HResult<HANDLE> {
+    let lv1: Vec<u16> = str_to_vec_u16(name.as_ref().into());
     let mut lv2: HANDLE = unsafe {mem::uninitialized::<_>()};
     let _hr=unsafe { (*(self.iptr() as *mut ID3D12Device)).CreateSharedHandle(object, attributes.as_ref().map(|p|*p as *const _ as *const _).unwrap_or(ptr::null()), access, lv1.as_ptr() as LPCWSTR, &mut lv2 as *mut _ as *mut _) };
     hr2ret(_hr,lv2)
@@ -594,8 +594,8 @@ pub trait TD3D12Device: TD3D12Object {
   //  Method OpenSharedHandleByName
   
   #[allow(non_snake_case)]
-  fn open_shared_handle_by_name(&self, name: Cow<str>, access: DWORD) -> HResult<HANDLE> {
-    let lv1: Vec<u16> = str_to_vec_u16(name);
+  fn open_shared_handle_by_name<T: AsRef<str>>(&self, name: T, access: DWORD) -> HResult<HANDLE> {
+    let lv1: Vec<u16> = str_to_vec_u16(name.as_ref().into());
     let mut lv2: HANDLE = unsafe {mem::uninitialized::<_>()};
     let _hr=unsafe { (*(self.iptr() as *mut ID3D12Device)).OpenSharedHandleByName(lv1.as_ptr() as LPCWSTR, access, &mut lv2 as *mut _ as *mut _) };
     hr2ret(_hr,lv2)
@@ -1305,8 +1305,8 @@ pub trait TD3D12Object: TUnknown {
   //  Method SetName
   
   #[allow(non_snake_case)]
-  fn set_name(&self, name: Cow<str>) -> HResult<HRESULT> {
-    let lv1: Vec<u16> = str_to_vec_u16(name);
+  fn set_name<T: AsRef<str>>(&self, name: T) -> HResult<HRESULT> {
+    let lv1: Vec<u16> = str_to_vec_u16(name.as_ref().into());
     let _hr=unsafe { (*(self.iptr() as *mut ID3D12Object)).SetName(lv1.as_ptr() as LPCWSTR) };
     hr2ret(_hr,_hr)
   }
@@ -1365,6 +1365,8 @@ impl HasIID for D3D12Pageable {
 }
 
 pub trait TD3D12PipelineState: TD3D12Pageable {
+  //  Method GetCachedBlob
+  //  Error: ppBlob parameter: Unexpected type Ptr (Ptr (TypedefRef "ID3DBlob"))
   
 }
 

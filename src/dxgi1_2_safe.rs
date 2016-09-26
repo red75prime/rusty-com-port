@@ -438,8 +438,8 @@ pub trait TDXGIResource1: TDXGIResource {
   //  Method CreateSharedHandle
   
   #[allow(non_snake_case)]
-  fn create_shared_handle(&self, attributes: Option<&SECURITY_ATTRIBUTES>, access: DWORD, lpName: Cow<str>) -> HResult<HANDLE> {
-    let lv1: Vec<u16> = str_to_vec_u16(lpName);
+  fn create_shared_handle<T: AsRef<str>>(&self, attributes: Option<&SECURITY_ATTRIBUTES>, access: DWORD, lpName: T) -> HResult<HANDLE> {
+    let lv1: Vec<u16> = str_to_vec_u16(lpName.as_ref().into());
     let mut lv2: HANDLE = unsafe {mem::uninitialized::<_>()};
     let _hr=unsafe { (*(self.iptr() as *mut IDXGIResource1)).CreateSharedHandle(attributes.as_ref().map(|p|*p as *const _ as *const _).unwrap_or(ptr::null()), access, lv1.as_ptr() as LPCWSTR, &mut lv2 as *mut _ as *mut _) };
     hr2ret(_hr,lv2)

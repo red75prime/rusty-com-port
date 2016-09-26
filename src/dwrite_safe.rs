@@ -140,8 +140,8 @@ pub trait TDWriteFactory: TUnknown {
   //  Method CreateFontFileReference
   
   #[allow(non_snake_case)]
-  fn create_font_file_reference(&self, filePath: Cow<str>, lastWriteTime: Option<&FILETIME>) -> HResult<DWriteFontFile> {
-    let lv1: Vec<u16> = str_to_vec_u16(filePath);
+  fn create_font_file_reference<T: AsRef<str>>(&self, filePath: T, lastWriteTime: Option<&FILETIME>) -> HResult<DWriteFontFile> {
+    let lv1: Vec<u16> = str_to_vec_u16(filePath.as_ref().into());
     let mut lv2: *mut IDWriteFontFile = ptr::null_mut();
     let _hr=unsafe { (*(self.iptr() as *mut IDWriteFactory)).CreateFontFileReference(lv1.as_ptr() as LPCWSTR, lastWriteTime.as_ref().map(|p|*p as *const _ as *const _).unwrap_or(ptr::null()), &mut lv2 as *mut *mut _) };
     hr2ret(_hr,DWriteFontFile::new(lv2 as *mut _))
@@ -214,9 +214,9 @@ pub trait TDWriteFactory: TUnknown {
   //  Method CreateTextFormat
   
   #[allow(non_snake_case)]
-  fn create_text_format(&self, fontFamilyName: Cow<str>, fontCollection: Option<&DWriteFontCollection>, fontWeight: DWRITE_FONT_WEIGHT, fontStyle: DWRITE_FONT_STYLE, fontStretch: DWRITE_FONT_STRETCH, fontSize: FLOAT, localeName: Cow<str>) -> HResult<DWriteTextFormat> {
-    let lv1: Vec<u16> = str_to_vec_u16(fontFamilyName);
-    let lv2: Vec<u16> = str_to_vec_u16(localeName);
+  fn create_text_format<T: AsRef<str>, T1: AsRef<str>>(&self, fontFamilyName: T, fontCollection: Option<&DWriteFontCollection>, fontWeight: DWRITE_FONT_WEIGHT, fontStyle: DWRITE_FONT_STYLE, fontStretch: DWRITE_FONT_STRETCH, fontSize: FLOAT, localeName: T1) -> HResult<DWriteTextFormat> {
+    let lv1: Vec<u16> = str_to_vec_u16(fontFamilyName.as_ref().into());
+    let lv2: Vec<u16> = str_to_vec_u16(localeName.as_ref().into());
     let mut lv3: *mut IDWriteTextFormat = ptr::null_mut();
     let _hr=unsafe { (*(self.iptr() as *mut IDWriteFactory)).CreateTextFormat(lv1.as_ptr() as LPCWSTR, fontCollection.map(|i|i.iptr()).unwrap_or(ptr::null_mut()) as *mut _ as *mut _, fontWeight, fontStyle, fontStretch, fontSize, lv2.as_ptr() as LPCWSTR, &mut lv3 as *mut *mut _) };
     hr2ret(_hr,DWriteTextFormat::new(lv3 as *mut _))
@@ -279,8 +279,8 @@ pub trait TDWriteFactory: TUnknown {
   //  Method CreateNumberSubstitution
   
   #[allow(non_snake_case)]
-  fn create_number_substitution(&self, substitutionMethod: DWRITE_NUMBER_SUBSTITUTION_METHOD, localeName: Cow<str>, ignoreUserOverride: BOOL) -> HResult<DWriteNumberSubstitution> {
-    let lv1: Vec<u16> = str_to_vec_u16(localeName);
+  fn create_number_substitution<T: AsRef<str>>(&self, substitutionMethod: DWRITE_NUMBER_SUBSTITUTION_METHOD, localeName: T, ignoreUserOverride: BOOL) -> HResult<DWriteNumberSubstitution> {
+    let lv1: Vec<u16> = str_to_vec_u16(localeName.as_ref().into());
     let mut lv2: *mut IDWriteNumberSubstitution = ptr::null_mut();
     let _hr=unsafe { (*(self.iptr() as *mut IDWriteFactory)).CreateNumberSubstitution(substitutionMethod, lv1.as_ptr() as LPCWSTR, ignoreUserOverride, &mut lv2 as *mut *mut _) };
     hr2ret(_hr,DWriteNumberSubstitution::new(lv2 as *mut _))
@@ -377,8 +377,8 @@ pub trait TDWriteFontCollection: TUnknown {
   //  Method FindFamilyName
   
   #[allow(non_snake_case)]
-  fn find_family_name(&self, familyName: Cow<str>) -> HResult<(UINT32, BOOL)> {
-    let lv1: Vec<u16> = str_to_vec_u16(familyName);
+  fn find_family_name<T: AsRef<str>>(&self, familyName: T) -> HResult<(UINT32, BOOL)> {
+    let lv1: Vec<u16> = str_to_vec_u16(familyName.as_ref().into());
     let mut lv2: UINT32 = unsafe {mem::uninitialized::<_>()};
     let mut lv3: BOOL = unsafe {mem::uninitialized::<_>()};
     let _hr=unsafe { (*(self.iptr() as *mut IDWriteFontCollection)).FindFamilyName(lv1.as_ptr() as LPCWSTR, &mut lv2 as *mut _ as *mut _, &mut lv3 as *mut _ as *mut _) };
@@ -1168,8 +1168,8 @@ pub trait TDWriteLocalizedStrings: TUnknown {
   //  Method FindLocaleName
   
   #[allow(non_snake_case)]
-  fn find_locale_name(&self, localeName: Cow<str>) -> HResult<(UINT32, BOOL)> {
-    let lv1: Vec<u16> = str_to_vec_u16(localeName);
+  fn find_locale_name<T: AsRef<str>>(&self, localeName: T) -> HResult<(UINT32, BOOL)> {
+    let lv1: Vec<u16> = str_to_vec_u16(localeName.as_ref().into());
     let mut lv2: UINT32 = unsafe {mem::uninitialized::<_>()};
     let mut lv3: BOOL = unsafe {mem::uninitialized::<_>()};
     let _hr=unsafe { (*(self.iptr() as *mut IDWriteLocalizedStrings)).FindLocaleName(lv1.as_ptr() as LPCWSTR, &mut lv2 as *mut _ as *mut _, &mut lv3 as *mut _ as *mut _) };
@@ -1739,8 +1739,8 @@ pub trait TDWriteTextLayout: TDWriteTextFormat {
   //  Method SetFontFamilyName
   
   #[allow(non_snake_case)]
-  fn set_font_family_name(&self, fontFamilyName: Cow<str>, textRange: DWRITE_TEXT_RANGE) -> HResult<HRESULT> {
-    let lv1: Vec<u16> = str_to_vec_u16(fontFamilyName);
+  fn set_font_family_name<T: AsRef<str>>(&self, fontFamilyName: T, textRange: DWRITE_TEXT_RANGE) -> HResult<HRESULT> {
+    let lv1: Vec<u16> = str_to_vec_u16(fontFamilyName.as_ref().into());
     let _hr=unsafe { (*(self.iptr() as *mut IDWriteTextLayout)).SetFontFamilyName(lv1.as_ptr() as LPCWSTR, textRange) };
     hr2ret(_hr,_hr)
   }
@@ -1829,8 +1829,8 @@ pub trait TDWriteTextLayout: TDWriteTextFormat {
   //  Method SetLocaleName
   
   #[allow(non_snake_case)]
-  fn set_locale_name(&self, localeName: Cow<str>, textRange: DWRITE_TEXT_RANGE) -> HResult<HRESULT> {
-    let lv1: Vec<u16> = str_to_vec_u16(localeName);
+  fn set_locale_name<T: AsRef<str>>(&self, localeName: T, textRange: DWRITE_TEXT_RANGE) -> HResult<HRESULT> {
+    let lv1: Vec<u16> = str_to_vec_u16(localeName.as_ref().into());
     let _hr=unsafe { (*(self.iptr() as *mut IDWriteTextLayout)).SetLocaleName(lv1.as_ptr() as LPCWSTR, textRange) };
     hr2ret(_hr,_hr)
   }
