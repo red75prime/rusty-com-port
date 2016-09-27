@@ -1604,9 +1604,9 @@ pub trait TD2D1RenderTarget: TD2D1Resource {
   //  Method DrawTextLayout
   
   #[allow(non_snake_case)]
-  fn draw_text_layout(&self, origin: D2D1_POINT_2F, textLayout: &mut IDWriteTextLayout, defaultForegroundBrush: &mut ID2D1Brush, options: D2D1_DRAW_TEXT_OPTIONS) -> () {
+  fn draw_text_layout<T: TDWriteTextLayout, T1: TD2D1Brush>(&self, origin: D2D1_POINT_2F, textLayout: &T, defaultForegroundBrush: &T1, options: D2D1_DRAW_TEXT_OPTIONS) -> () {
   
-    let _hr=unsafe { (*(self.iptr() as *mut ID2D1RenderTarget)).DrawTextLayout(origin, textLayout, defaultForegroundBrush, options) };
+    let _hr=unsafe { (*(self.iptr() as *mut ID2D1RenderTarget)).DrawTextLayout(origin, textLayout.iptr() as *mut _ as *mut _ , defaultForegroundBrush.iptr() as *mut _ as *mut _ , options) };
     ()
   }
   
