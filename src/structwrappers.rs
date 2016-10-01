@@ -907,14 +907,14 @@ impl DescriptorHeap {
     pub fn cpu_handle(&self, i: u32) -> D3D12_CPU_DESCRIPTOR_HANDLE {
         assert!(i < self.heap_size);
         let mut handle = self.dheap.get_cpu_descriptor_handle_for_heap_start();
-        handle.ptr += (i as u64) * (self.handle_size as u64);
+        handle.ptr += (i as SIZE_T) * (self.handle_size as SIZE_T);
         handle
     }
 
     pub fn gpu_handle(&self, i: u32) -> D3D12_GPU_DESCRIPTOR_HANDLE {
         assert!(i < self.heap_size);
         let mut handle = self.dheap.get_gpu_descriptor_handle_for_heap_start();
-        handle.ptr += (i as SIZE_T) * self.handle_size;
+        handle.ptr += (i as u64) * (self.handle_size as u64);
         handle
     }
 
