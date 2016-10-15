@@ -1,6 +1,6 @@
 [package]
 name = "dxsafe"
-version = "0.4.5"
+version = "0.5.5"
 authors = ["red75prime <red75prim@gmail.com>"]
 
 [lib]

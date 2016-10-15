@@ -1,7 +1,7 @@
 use winapi::*;
 use super::*; 
 //use std::ptr;
-//use std::mem;
+use std::mem;
 
 macro_rules! impl_into_iterator {
     ($factory:ident, $iterator:ident) => {
@@ -25,13 +25,14 @@ pub struct DXGIAdapterIterator<'a, T: 'a + TDXGIFactory1> {
 }
 
 impl<'a, T: 'a + TDXGIFactory1> Iterator for DXGIAdapterIterator<'a, T> {
-    type Item = DXGIAdapter1;
+    type Item = (u32, DXGIAdapter1);
     
     fn next(&mut self) -> Option<Self::Item> {
         match self.object.enum_adapters1(self.cur_num) {
             Ok(adapter) => {
-                self.cur_num += 1;
-                Some(adapter)
+                let num1 = self.cur_num + 1;
+                let num = mem::replace(&mut self.cur_num, num1);
+                Some((num, adapter))
             },
             Err(err) if err == DXGI_ERROR_NOT_FOUND => {
                 None
@@ -54,13 +55,14 @@ pub struct DXGIOutputIterator<'a, T: 'a + TDXGIAdapter> {
 }
 
 impl<'a, T: 'a + TDXGIAdapter> Iterator for DXGIOutputIterator<'a, T> {
-    type Item = DXGIOutput;
+    type Item = (u32, DXGIOutput);
     
     fn next(&mut self) -> Option<Self::Item> {
         match self.object.enum_outputs(self.cur_num) {
             Ok(output) => {
-                self.cur_num += 1;
-                Some(output)
+                let num1 = self.cur_num + 1;
+                let num = mem::replace(&mut self.cur_num, num1);
+                Some((num, output))
             },
             Err(err) if err == DXGI_ERROR_NOT_FOUND => {
                 None
