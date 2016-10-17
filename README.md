@@ -1,5 +1,5 @@
 # rusty-com-port
-Safish Rust wrapper for Windows COM interfaces (D3D12, DWrite, DXGI...)
+Safe(ish) Rust wrapper for Windows COM interfaces (D3D12, DWrite, DXGI...)
 
 Somewhat stable modules are d3d12_safe, d3d12sdklayers_safe, dxgi_safe, dxgi1_2_safe, dxgi1_3_safe, dxgi1_4_safe.
 
