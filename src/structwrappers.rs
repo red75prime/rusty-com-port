@@ -749,9 +749,22 @@ pub fn rasterizer_desc_default() -> D3D12_RASTERIZER_DESC {
     }
 }
 
+pub fn depth_stencil_state_default() -> D3D12_DEPTH_STENCIL_DESC {
+    let stencilop_desc_def = depth_stencilop_desc_default();
+    D3D12_DEPTH_STENCIL_DESC {
+        DepthEnable: 1,
+        DepthWriteMask: D3D12_DEPTH_WRITE_MASK_ALL,
+        DepthFunc: D3D12_COMPARISON_FUNC_LESS,
+        StencilEnable: 0,
+        StencilReadMask: D3D12_DEFAULT_STENCIL_READ_MASK as u8,
+        StencilWriteMask: D3D12_DEFAULT_STENCIL_WRITE_MASK as u8,
+        FrontFace: stencilop_desc_def,
+        BackFace: stencilop_desc_def,
+    }
+}
+
 pub fn graphics_pipeline_state_desc_default() -> D3D12_GRAPHICS_PIPELINE_STATE_DESC {
     let blend_desc_def = render_target_blend_desc_default();
-    let stencilop_desc_def = depth_stencilop_desc_default();
 
     D3D12_GRAPHICS_PIPELINE_STATE_DESC {
         pRootSignature: ptr::null_mut(),
@@ -796,16 +809,7 @@ pub fn graphics_pipeline_state_desc_default() -> D3D12_GRAPHICS_PIPELINE_STATE_D
         },
         SampleMask: 0xffffffff,
         RasterizerState: rasterizer_desc_default(),
-        DepthStencilState: D3D12_DEPTH_STENCIL_DESC {
-            DepthEnable: 1,
-            DepthWriteMask: D3D12_DEPTH_WRITE_MASK_ALL,
-            DepthFunc: D3D12_COMPARISON_FUNC_LESS,
-            StencilEnable: 0,
-            StencilReadMask: D3D12_DEFAULT_STENCIL_READ_MASK as u8,
-            StencilWriteMask: D3D12_DEFAULT_STENCIL_WRITE_MASK as u8,
-            FrontFace: stencilop_desc_def,
-            BackFace: stencilop_desc_def,
-        },
+        DepthStencilState: depth_stencil_state_default(),
         InputLayout: D3D12_INPUT_LAYOUT_DESC {
             pInputElementDescs: ptr::null(),
             NumElements: 0,
