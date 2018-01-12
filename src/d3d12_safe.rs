@@ -523,7 +523,7 @@ pub trait TD3D12Device: TD3D12Object {
   #[allow(non_snake_case)]
   fn get_resource_allocation_info(&self, visibleMask: UINT, resource_descs: &[D3D12_RESOURCE_DESC]) -> D3D12_RESOURCE_ALLOCATION_INFO {
     let mut lv1: D3D12_RESOURCE_ALLOCATION_INFO = unsafe {mem::uninitialized::<_>()};
-    let _hr=unsafe { (*(self.iptr() as *mut ID3D12Device)).GetResourceAllocationInfo(visibleMask, resource_descs.len() as UINT, slice_as_ptr(resource_descs), &mut lv1 as *mut _ as *mut _) };
+    let _hr=unsafe { (*(self.iptr() as *mut ID3D12Device)).GetResourceAllocationInfo(&mut lv1 as *mut _ as *mut _, visibleMask, resource_descs.len() as UINT, slice_as_ptr(resource_descs)) };
     lv1
   }
   
@@ -532,7 +532,7 @@ pub trait TD3D12Device: TD3D12Object {
   #[allow(non_snake_case)]
   fn get_custom_heap_properties(&self, nodeMask: UINT, heapType: D3D12_HEAP_TYPE) -> D3D12_HEAP_PROPERTIES {
     let mut lv1: D3D12_HEAP_PROPERTIES = unsafe {mem::uninitialized::<_>()};
-    let _hr=unsafe { (*(self.iptr() as *mut ID3D12Device)).GetCustomHeapProperties(nodeMask, heapType, &mut lv1 as *mut _ as *mut _) };
+    let _hr=unsafe { (*(self.iptr() as *mut ID3D12Device)).GetCustomHeapProperties(&mut lv1 as *mut _ as *mut _, nodeMask, heapType) };
     lv1
   }
   
